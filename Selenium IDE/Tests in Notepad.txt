@@ -1,0 +1,126 @@
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.WebDriverRunner;
+import org.openqa.selenium.By;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.*;
+
+
+
+public class Test {
+
+    // тест з уроку
+    @org.junit.Test
+    public void googleTest() {
+        open("https://pethouse.ua/ua/");
+        $("#tpl-logo").click();
+        assert WebDriverRunner.url().equals("https://pethouse.ua/ua/");
+        screenshot("logo is working");
+    }
+
+    // тест з уроку
+    @org.junit.Test
+    public void SearchIsWorking() {
+        open("https://pethouse.ua/ua/");
+        $("#search").click();
+        $("#search").setValue("Їжа для собак").pressEnter();
+        $("h1").shouldHave(Condition.text("Результати пошуку"));
+        $("h1").shouldBe(visible);
+    }
+
+    // 1. Клік на іконку YouTube
+    @org.junit.Test
+    public void ClickOnButtom() {
+        open("https://pethouse.ua/ua/");
+        $("img[src='/assets/images/social/ph-youtube.png']").click();
+        sleep(3000);
+        closeWebDriver();
+    }
+
+
+    // 2.Наведення на іконку контактів
+    @org.junit.Test
+    public void Contact() {
+        open("https://pethouse.ua/ua/");
+        $(".header-contacts").hover();
+        sleep(3000);
+        closeWebDriver();
+    }
+
+    // 3. Нтискання кнопки "Зареєструватись" з незаповненими даними
+    @org.junit.Test
+    public void Registry() {
+        open("https://pethouse.ua/ua/");
+        $(".wow-msg").click();
+        sleep(3000);
+        $("#wlpeSaveRegisterButton").pressEnter();
+        sleep(3000);
+        $("#surname-error").shouldBe(visible);
+        sleep(3000);
+        closeWebDriver();
+
+    }
+
+    // 4. Додавання товару в кошик та збільшення до 2 одиниць
+    @org.junit.Test
+    public void Buy() {
+        open("https://pethouse.ua/ua/shop/pticam/lakomstva/priroda/priroda-kolosok-dlya-popugaev--multivitamin/");
+        sleep(3000);
+        $(By.xpath("//a[@class='ph-new-catalog-unit-buy']")).click();
+        sleep(7000);
+        refresh();
+        sleep(7000);
+        $("#increment-good").click();
+        sleep(5000);
+        closeWebDriver();
+        }
+
+    // 5. Додавання товару та активація неіснуючого промокоду
+    @org.junit.Test
+    public void Promocode() {
+        open("https://pethouse.ua/ua/shop/pticam/lakomstva/priroda/priroda-kolosok-dlya-popugaev--multivitamin/");
+        sleep(3000);
+        $(By.xpath("//a[@class='ph-new-catalog-unit-buy']")).click();
+        open("https://pethouse.ua/ua/");
+        sleep(7000);
+        $(".icon-cart").click();
+        sleep(7000);
+        $(".promo-toogle").click();
+        sleep(7000);
+        $(By.xpath("//input[@type='text'][@id='promo-code']")).click();
+        $(By.xpath("//input[@type='text'][@id='promo-code']")).setValue("Promocode");
+        $(By.xpath("//input[@type='button'][@id='promo-code-btn']")).click();
+        sleep(5000);
+        $("#promo-code-error").shouldHave(Condition.text("Промокод недійсний"));
+        closeWebDriver();
+    }
+
+    // 6. Додавання товарів для порівняння та видалення одного з них
+    @org.junit.Test
+    public void Comparison() {
+        open("https://pethouse.ua/ua/shop/sobakam/miski-i-konteineri-dlya-korma/trixie/trixie-miski-na-podstavke-dlya-koshek-i-sobak-metall/");
+        sleep(3000);
+        $(".cat-compare-add").click();
+        sleep(3000);
+        open("https://pethouse.ua/ua/shop/sobakam/miski-i-konteineri-dlya-korma/trixie/trixie-miska-iz-nerzhaveyuschei-stali/");
+        sleep(3000);
+        $(".cat-compare-add").click();
+        sleep(3000);
+        $(".compare-big").click();
+        sleep(3000);
+        $(By.xpath("//*[@class='delete-one-good-compare'][@data-id='000001554']")).click();
+        sleep(5000);
+        closeWebDriver();
+        }
+
+    // 7. Швидка реєстрація
+    @org.junit.Test
+    public void FastRegistry() {
+        open("https://pethouse.ua/ua/");
+        $(".wow-msg").click();
+        sleep(3000);
+        $(By.xpath("//img[@id='googleRegIn']")).click();
+        sleep(5000);
+        closeWebDriver();
+    }
+
+}
